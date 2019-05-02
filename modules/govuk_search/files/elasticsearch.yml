@@ -3,3 +3,5 @@ network.host: 0.0.0.0
 
 discovery.zen.minimum_master_nodes: 1
 path.repo: ["/usr/share/elasticsearch/import"]
+
+s3.client.default.endpoint: s3.eu-west-1.amazonaws.com

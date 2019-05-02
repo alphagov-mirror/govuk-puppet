@@ -3,18 +3,26 @@
 # Installs and configures Docker and Docker Compose
 class govuk_search::docker_elasticsearch {
 
-  file { '/usr/share/docker':
+  $docker_directory = '/usr/share/docker/elasticsearch'
+  $compose_path = "${docker_directory}/docker-compose.yml"
+
+  file { $docker_directory:
     ensure => directory,
   } ->
 
-  file { '/usr/share/docker/elasticsearch-docker-compose.yml':
+  file { "${docker_directory}/config.yml":
     ensure  => file,
-    content => template('govuk_search/elasticsearch-docker-compose.yml'),
-  }
+    source => 'puppet:///modules/govuk_search/elasticsearch.yml',
+  } ->
 
-  file { '/usr/share/docker/elasticsearch.yml':
+  file { "${docker_directory}/Dockerfile":
     ensure  => file,
-    content => template('govuk_search/elasticsearch.yml'),
+    source => 'puppet:///modules/govuk_search/Dockerfile',
+  } ->
+
+  file { $compose_path:
+    ensure => file,
+    source => 'puppet:///modules/govuk_search/docker-compose.yml',
   }
 
   include ::govuk_docker
@@ -24,9 +32,9 @@ class govuk_search::docker_elasticsearch {
     version => '1.7.0',
   }
 
-  docker_compose { '/usr/share/docker/elasticsearch-docker-compose.yml':
+  docker_compose { $compose_path:
     ensure  => present,
-    require => File['/usr/share/docker/elasticsearch-docker-compose.yml'],
+    require => File[$compose_path],
   }
 
 }
