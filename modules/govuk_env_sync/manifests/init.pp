@@ -20,5 +20,9 @@ class govuk_env_sync(
     mode    => '0770',
   }
 
+  resources { 'cron':
+    purge => true,
+  }
+
   create_resources(govuk_env_sync::task, $tasks)
 }
