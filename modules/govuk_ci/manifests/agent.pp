@@ -88,4 +88,29 @@ class govuk_ci::agent(
     username  => 'jenkins',
     user_home => '/var/lib/jenkins',
   }
+
+  file { '/usr/local/bin/start_clamav':
+    ensure => present,
+    source => 'puppet:///modules/govuk_ci/start_clamav',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
+  file { '/usr/local/bin/stop_clamav':
+    ensure => present,
+    source => 'puppet:///modules/govuk_ci/stop_clamav',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
+  file { '/usr/local/bin/status_clamav':
+    ensure => present,
+    source => 'puppet:///modules/govuk_ci/status_clamav',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
 }

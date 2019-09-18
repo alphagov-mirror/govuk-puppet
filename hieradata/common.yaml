@@ -1081,6 +1081,8 @@ govuk_sudo::sudo_conf:
     content: 'nagios ALL=NOPASSWD:/sbin/initctl reload *'
   ubuntu:
     content: 'ubuntu ALL=(ALL) NOPASSWD:ALL'
+  control_clamav:
+    content: 'jenkins ALL=(root) NOPASSWD:/usr/local/bin/start_clamav,/usr/local/bin/stop_clamav,/usr/local/bin/status_clamav'
 
 govuk_sysdig::apt_mirror_hostname: "%{hiera('apt_mirror_hostname')}"
 govuk_sysdig::ensure: 'absent'
