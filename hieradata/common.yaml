@@ -1083,7 +1083,10 @@ govuk_sudo::sudo_conf:
     content: 'ubuntu ALL=(ALL) NOPASSWD:ALL'
   control_clamav:
     content: >-
-     Cmnd_Alias CLAMAV_SERVICE = service clamav-daemon start, service clamav-daemon restart, service clamav-daemon stop
+     Cmnd_Alias CLAMAV_SERVICE = /usr/sbin/service clamav-daemon start,
+     /usr/sbin/service clamav-daemon restart,
+     /usr/sbin/service clamav-daemon stop
+
      jenkins ALL=(root) NOPASSWD: CLAMAV_SERVICE
 
 govuk_sysdig::apt_mirror_hostname: "%{hiera('apt_mirror_hostname')}"
