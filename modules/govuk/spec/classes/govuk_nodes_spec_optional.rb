@@ -18,6 +18,9 @@ def temporary_hiera_file_for(hiera_yml_name)
   standard_hiera_config[:eyaml][:gpg_gnupghome] = 'gpg'
 
   temporary_hiera_file = Tempfile.new('hiera_yml')
+  puts "TMP #{temporary_hiera_file}"
+  puts hiera_yml_name
+  puts standard_hiera_config.to_yaml
   temporary_hiera_file.write(standard_hiera_config.to_yaml)
   temporary_hiera_file.close
 
@@ -36,7 +39,12 @@ excluded_classes_for_carrenza = [
   "warehouse_db_admin",
   "calculators_frontend",
   "cache",
-  "bouncer"
+  "bouncer",
+  "ckan",
+  "frontend",
+  "gatling",
+  "search",
+  "content_store",
 ]
 
 excluded_classes_for_aws = [
@@ -51,6 +59,11 @@ excluded_classes_for_aws = [
   "mysql_slave",
   "postgresql_standby",
   "whitehall_mysql_master",
+  "api_redis",
+  "redis",
+  "mysql_backup",
+  "email_alert_api",
+  "ci_master",
 ]
 
 ENV.fetch('classes').split(",").each do |class_name|
@@ -101,6 +114,7 @@ ENV.fetch('classes').split(",").each do |class_name|
         let(:hiera_config) { aws_hieradata_file_path }
 
         it "should compile" do
+          puts "PATH #{hiera_config}"
           expect { subject.call }.not_to raise_error
         end
       end
