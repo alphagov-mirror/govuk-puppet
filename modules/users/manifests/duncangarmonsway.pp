@@ -1,3 +1,4 @@
+# Creates the user duncangarmonsway
 class users::duncangarmonsway {
   govuk_user { 'duncangarmonsway':
     fullname => 'Duncan Garmonsway',
