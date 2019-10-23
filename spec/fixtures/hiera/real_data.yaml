@@ -2,7 +2,7 @@
 :backends:
   - yaml
 :yaml:
-  :datadir: 'hieradata'
+  :datadir: 'hieradata_aws'
 :hierarchy:
   - '%{::environment}'
   - 'common'

@@ -3,7 +3,7 @@ require_relative '../../../../spec_helper'
 describe "router::assets_origin", :type => :class do
 
   describe "app_specific_static_asset_routes targets" do
-    let(:app_specific_static_asset_routes) { YAML.load_file(File.expand_path("../../../../../hieradata/common.yaml", __FILE__))['router::assets_origin::app_specific_static_asset_routes'] }
+    let(:app_specific_static_asset_routes) { YAML.load_file(File.expand_path("../../../../../hieradata_aws/common.yaml", __FILE__))['router::assets_origin::app_specific_static_asset_routes'] }
 
     let(:all_hostnames) {
       subject.call.resources.each_with_object([]) do |resource, hostnames|
@@ -43,7 +43,7 @@ describe "router::assets_origin", :type => :class do
   end
 
   describe "asset_manager_uploaded_assets_routes targets" do
-    let(:asset_manager_uploaded_assets_routes) { YAML.load_file(File.expand_path("../../../../../hieradata/common.yaml", __FILE__))['router::assets_origin::asset_manager_uploaded_assets_routes'] }
+    let(:asset_manager_uploaded_assets_routes) { YAML.load_file(File.expand_path("../../../../../hieradata_aws/common.yaml", __FILE__))['router::assets_origin::asset_manager_uploaded_assets_routes'] }
 
     let(:all_hostnames) {
       subject.call.resources.each_with_object([]) do |resource, hostnames|
