@@ -77,6 +77,17 @@ class govuk::apps::router (
     local_tcpconns_established_critical => 200,
   }
 
+  govuk::app::service { 'router':
+    # We are overriding the restart command to use reload
+    # because the underlying application uses github.com/alext/tablecloth
+    # which re-execs the itself (the app, based on the path) when it receives a
+    # SIGHUP
+    #
+    # 'service $service reload' sends a SIGHUP instead of a SIGTERM which would
+    # cause downtime
+    restart => 'service router reload',
+  }
+
   # We can't pass `health_check_path` to `govuk::app` because it has the
   # reverse proxy port, not the API port. Changing the port would lose us
   # TCP connection stats.
