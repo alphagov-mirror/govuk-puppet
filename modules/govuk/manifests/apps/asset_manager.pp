@@ -27,6 +27,12 @@
 #   An array of MongoDB instance hostnames
 # [*mongodb_name*]
 #   The name of the MongoDB database to use
+# [*mongodb_username*]
+#   The username to use when logging to the MongoDB database,
+#   only needed if asset manager uses documentdb rather than mongodb
+# [*mongodb_password*]
+#   The password to use when logging to the MongoDB database
+#   only needed if asset manager uses documentdb rather than mongodb
 # [*aws_s3_bucket_name*]
 #   The name of the AWS S3 bucket to use for storing/serving assets
 # [*aws_region*]
@@ -59,6 +65,8 @@ class govuk::apps::asset_manager(
   $jwt_auth_secret = undef,
   $mongodb_nodes,
   $mongodb_name = 'govuk_assets_production',
+  $mongodb_username = undef,
+  $mongodb_password = undef,
   $aws_s3_bucket_name = undef,
   $aws_region = undef,
   $aws_access_key_id = undef,
@@ -156,5 +164,18 @@ class govuk::apps::asset_manager(
         varname => 'AWS_SECRET_KEY',
         value   => $aws_secret_access_key;
     }
+
+  # add the new environment variables to authenticate with documentdb
+  # This is only needed in AWS staging as only testing for now
+  if ($::aws_environment == 'staging') {
+    govuk::app::envvar {
+      "${title}-MONGODB_USERNAME":
+        varname => 'MONGODB_USERNAME',
+        value   => $mongodb_username;
+      "${title}-MONGODB_PASSWORD":
+        varname => 'MONGODB_PASSWORD',
+        value   => $mongodb_password;
+    }
+  }
   }
 }
