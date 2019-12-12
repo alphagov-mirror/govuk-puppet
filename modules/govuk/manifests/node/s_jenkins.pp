@@ -24,6 +24,7 @@ class govuk::node::s_jenkins (
 ) inherits govuk::node::s_base {
   include google_chrome
   include nginx
+  include ::govuk_docker
   include govuk_postgresql::client
   include govuk_rbenv::all
   include ::chromedriver
