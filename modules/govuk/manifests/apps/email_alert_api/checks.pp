@@ -24,13 +24,13 @@ class govuk::apps::email_alert_api::checks(
     desc      => 'High number of email send requests',
   }
 
-  @@icinga::check::graphite { "email-alert-api-delivery-attempt-status-update":
+  @@icinga::check::graphite { 'email-alert-api-delivery-attempt-status-update':
     ensure    => $ensure,
     host_name => $::fqdn,
-    target    => "divideSeries(keepLastValue(stats.gauges.govuk.email-alert-api.delivery_attempt.pending_status_total), keepLastValue(stats.gauges.govuk.email-alert-api.delivery_attempt.total))",
+    target    => 'divideSeries(keepLastValue(stats.gauges.govuk.email-alert-api.delivery_attempt.pending_status_total), keepLastValue(stats.gauges.govuk.email-alert-api.delivery_attempt.total))',
     warning   => '0.166',
     critical  => '0.25',
     from      => '1hour',
-    desc      => "High number of delivery attempts haven't received status updates",
+    desc      => 'High number of delivery attempts have not received status updates',
   }
 }
