@@ -17,18 +17,15 @@ CARRENZA_EXCLUDED_NODE_CLASSES = %w[
   draft_content_store
   draft_frontend
   email_alert_api
-  email_alert_api_db_admin
   frontend
   gatling
   licensing_frontend
   licensing_backend
   mapit
   mirrorer
-  publishing_api_db_admin
   router_backend
   search
   transition_db_admin
-  warehouse_db_admin
 ]
 
 AWS_EXCLUDED_NODE_CLASSES = %w[
