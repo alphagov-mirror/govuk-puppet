@@ -14,10 +14,16 @@ class govuk_jenkins::jobs::search_relevancy_metrics_etl (
   $cron_schedule = undef,
   $app_domain = hiera('app_domain'),
 ) {
+  if $::aws_migration and ($::aws_environment != 'integration') {
+    $hosting_env_domain = "blue.${::aws_environment}.govuk.digital"
+  }
+  else {
+    $hosting_env_domain = $app_domain
+  }
 
   $check_name = 'search-relevancy-metrics-etl'
   $service_description = 'Search Relevancy Metrics ETL'
-  $job_url = "https://deploy.${::aws_environment}.govuk.digital/job/search_relevancy_metrics_etl/"
+  $job_url = "https://deploy.${hosting_env_domain}/job/search_relevancy_metrics_etl/"
 
   file { '/etc/jenkins_jobs/jobs/search_relevancy_metrics_etl.yaml':
     ensure  => present,

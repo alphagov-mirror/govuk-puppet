@@ -4,10 +4,16 @@
 #
 class govuk_jenkins::jobs::search_generate_sitemaps{
   $app_domain = hiera('app_domain')
+  if $::aws_migration and ($::aws_environment != 'integration') {
+    $hosting_env_domain = "blue.${::aws_environment}.govuk.digital"
+  }
+  else {
+    $hosting_env_domain = $app_domain
+  }
 
   $service_description = 'Runs a rake task on Search API that generates the sitemap files'
   $job_slug = 'search_generate_sitemaps'
-  $job_url = "https://deploy.${::aws_environment}.govuk.digital/job/${job_slug}"
+  $job_url = "https://deploy.${hosting_env_domain}/job/${job_slug}/"
 
   file { '/etc/jenkins_jobs/jobs/search_generate_sitemaps.yaml':
     ensure  => present,
