@@ -59,7 +59,7 @@ def ec2_nodes_list_with_puppet_class(stackname):
     hostname_and_puppet_class = []
 
     for reservation in reservations:
-        for instance in list(reservation['Instances']):
+        for instance in reservation['Instances']:
             hostname_and_puppet_class.append("%s:%s" % (
                 instance['PrivateDnsName'],
                 next(
