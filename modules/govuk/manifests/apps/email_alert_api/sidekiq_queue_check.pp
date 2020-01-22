@@ -21,6 +21,8 @@
 define govuk::apps::email_alert_api::sidekiq_queue_check(
   $size_warning,
   $size_critical,
+  $retry_size_warning,
+  $retry_size_critical,
 ) {
   icinga::check::graphite { "check_email_alert_api_${title}_queue_size":
     target    => "transformNull(averageSeries(keepLastValue(stats.gauges.govuk.app.email-alert-api.*.workers.queues.${title}.enqueued)), 0)",
@@ -33,5 +35,18 @@ define govuk::apps::email_alert_api::sidekiq_queue_check(
     desc      => "email-alert-api: high number of messages on ${title} sidekiq queue",
     host_name => $::fqdn,
     notes_url => monitoring_docs_url(email-alert-api-high-queue-size),
+  }
+
+  icinga::check::graphite { "check_email_alert_api_retry_queue_size":
+    target    => "transformNull(averageSeries(keepLastValue(stats.gauges.govuk.app.email-alert-api.*.workers.retry_set_size)), 0)",
+    from      => '24hours',
+    # Take an average over the most recent 36 datapoints, which at 5
+    # seconds per datapoint is the last 3 minutes
+    args      => '--dropfirst -36',
+    warning   => $retry_size_warning,
+    critical  => $retry_size_critical,
+    desc      => "email-alert-api: high number of messages on sidekiq retry queue",
+    host_name => $::fqdn,
+    notes_url => monitoring_docs_url(email-alert-api-high-retry-queue-size),
   }
 }

@@ -14,8 +14,10 @@ class govuk::apps::email_alert_api::checks(
                           'default',
                           'email_generation_digest',
                           'cleanup']:
-    size_warning  => '75000',
-    size_critical => '100000',
+    size_warning        => '75000',
+    size_critical       => '100000',
+    retry_size_warning  => '40000',
+    retry_size_critical => '50000',
     ;
   }
 
