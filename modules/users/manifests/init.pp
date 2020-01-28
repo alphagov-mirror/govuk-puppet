@@ -81,7 +81,7 @@ class users (
     include $pentest_user_classes
   }
 
-  $l_hostname = "${::aws_migration}"
+  $l_hostname = $::aws_migration
   if $::aws_migration {
     if ($l_hostname in $licensify_machines) {
       $licensify_user_classes = regsubst($licensify_usernames, '^', 'users::')
