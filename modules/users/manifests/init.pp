@@ -81,8 +81,10 @@ class users (
     include $pentest_user_classes
   }
 
-  if ($::aws_migration in $licensify_machines) {
-    $licensify_user_classes = regsubst($licensify_usernames, '^', 'users::')
-    include $licensify_user_classes
+  if $::aws_migration {
+    if ($::aws_migration in $licensify_machines) {
+      $licensify_user_classes = regsubst($licensify_usernames, '^', 'users::')
+      include $licensify_user_classes
+    }
   }
 }
