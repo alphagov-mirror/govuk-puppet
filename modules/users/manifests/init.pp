@@ -12,6 +12,14 @@
 #   List of pentest user accounts to add.
 #   Default: []
 #
+# [*licensify_machines*]
+#   List of machines which licensify contractors require access to.
+#   Default: []
+#
+# [*licensify_usernames*]
+#   List of licensify contractors user accounts to add.
+#   Default: []
+#
 # [*root_password_encrypted*]
 #   A string which is in the format that the operating system requires passwords
 #   (eg a SHA-512 hash on Ubuntu).
@@ -73,7 +81,7 @@ class users (
     include $pentest_user_classes
   }
 
-  if ($::aws_migration in $licensify_machines) {
+  if ($::govuk_node_class in $licensify_machines) {
     $licensify_user_classes = regsubst($licensify_usernames, '^', 'users::')
     include $licensify_user_classes
   }
