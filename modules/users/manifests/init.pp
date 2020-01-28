@@ -82,7 +82,7 @@ class users (
   }
 
   if $::aws_migration {
-    if ($::aws_migration in $licensify_machines) {
+    if ("${::aws_migration}" in $licensify_machines) {
       $licensify_user_classes = regsubst($licensify_usernames, '^', 'users::')
       include $licensify_user_classes
     }
