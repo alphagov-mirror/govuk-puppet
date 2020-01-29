@@ -82,7 +82,7 @@ class users (
   }
 
   if $::aws_migration {
-    $l_hostname = sprintf('%s', $::aws_migration)
+    $l_hostname = sprintf('%s', $::govuk_node_class)
     if ($l_hostname in $licensify_machines) {
       $licensify_user_classes = regsubst($licensify_usernames, '^', 'users::')
       include $licensify_user_classes
