@@ -147,6 +147,18 @@ client_max_body_size 500m;
       "${title}-EMAIL_ALERT_API_BEARER_TOKEN":
       varname => 'EMAIL_ALERT_API_BEARER_TOKEN',
       value   => $email_alert_api_bearer_token;
+      "${title}-AWS_ACCESS_KEY_ID":
+      varname => 'AWS_ACCESS_KEY_ID',
+      value   => $aws_access_key_id;
+      "${title}-AWS_SECRET_ACCESS_KEY":
+      varname => 'AWS_SECRET_ACCESS_KEY',
+      value   => $aws_secret_access_key;
+      "${title}-AWS_REGION":
+      varname => 'AWS_REGION',
+      value   => $aws_region;
+      "${title}-AWS_S3_BUCKET_NAME":
+      varname => 'AWS_S3_BUCKET_NAME',
+      value   => $aws_s3_bucket_name;
     }
 
     if $secret_key_base != undef {
