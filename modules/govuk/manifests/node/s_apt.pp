@@ -45,6 +45,10 @@ class govuk::node::s_apt (
       location => 'http://repo.aptly.info',
       release  => 'squeeze',
       key      => 'ED75B5A4483DA07C';
+    'cloudwatch':
+      location => 'https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu',
+      release  => 'amd64/latest',
+      key      => '937616F3450B7D806CBD9725D58167303B789C72';
     'duplicity':
       location => 'http://ppa.launchpad.net/duplicity-team/ppa/ubuntu',
       release  => 'trusty',
