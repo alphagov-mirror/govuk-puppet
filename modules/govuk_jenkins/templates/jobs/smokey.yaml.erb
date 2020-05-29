@@ -33,9 +33,8 @@
       - shell: |
           set +x
           export TARGET_PLATFORM=<%= @environment %>
-          export MYTASK=<%= @smokey_task %>
-          set -x
           ./jenkins.sh
+          set -x
     wrappers:
       - ansicolor:
           colormap: xterm
