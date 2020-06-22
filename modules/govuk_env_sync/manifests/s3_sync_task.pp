@@ -30,7 +30,7 @@ define govuk_env_sync::s3_sync_task(
   $minute,
   $source_bucket,
   $destination_bucket,
-  $delete = 'true',
+  $delete = 'false',
   $ensure = 'present',
 ) {
   $general_ensure = $ensure ? {
@@ -52,7 +52,7 @@ define govuk_env_sync::s3_sync_task(
     mode    => '0644',
     owner   => $govuk_env_sync::user,
     group   => $govuk_env_sync::user,
-    content => template('govuk_env_sync/govuk_env_sync_job.conf.erb'),
+    content => template('govuk_env_sync/govuk_env_s3_sync_job.conf.erb'),
   }
 
   ensure_resource('file', $temppath, {

@@ -720,7 +720,8 @@ case ${action} in
     fi
     ;;
   s3_sync)
-
+    s3_sync
+    ;;
 esac
 
 # The script arrived here without detour to throw_error/exit
