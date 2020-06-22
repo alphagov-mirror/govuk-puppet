@@ -19,7 +19,6 @@
 #   Delete objects in destination bucket not in source bucket
 #   Default: false
 #
-#
 # [*ensure*]
 #   One of 'present', 'disabled' or 'absent' to control the task.
 #   Default: 'present'
@@ -30,7 +29,7 @@ define govuk_env_sync::s3_sync_task(
   $minute,
   $source_bucket,
   $destination_bucket,
-  $delete = 'false',
+  $delete = false,
   $ensure = 'present',
 ) {
   $general_ensure = $ensure ? {
