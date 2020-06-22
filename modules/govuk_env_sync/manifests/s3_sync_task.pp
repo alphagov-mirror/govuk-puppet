@@ -54,13 +54,6 @@ define govuk_env_sync::s3_sync_task(
     content => template('govuk_env_sync/govuk_env_s3_sync_job.conf.erb'),
   }
 
-  ensure_resource('file', $temppath, {
-    ensure => 'directory',
-    mode   => '0775',
-    owner  => $govuk_env_sync::user,
-    group  => $govuk_env_sync::user,
-  })
-
   $synccommand = shellquote([
     '/usr/bin/ionice','-c','2','-n','6',
     '/usr/local/bin/with_reboot_lock', "env-sync_${title}",
