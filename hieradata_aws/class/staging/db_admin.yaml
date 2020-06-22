@@ -421,3 +421,4 @@ govuk_env_sync::s3_sync_tasks:
     minute: "15"
     source_bucket: govuk-production-content-publisher-activestorage
     destination_bucket: govuk-staging-content-publisher-activestorage
+    delete: true
