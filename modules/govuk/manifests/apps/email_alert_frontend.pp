@@ -19,6 +19,14 @@
 #   The bearer token to use when communicating with Publishing API.
 #   Default: undef
 #
+# [*redis_host*]
+#   Hostname of the Redis service
+#   Default: undef
+#
+# [*redis_port*]
+#   Port of the Redis service
+#   Default: undef
+#
 # [*secret_key_base*]
 #   The key for Rails to use when signing/encrypting sessions.
 #
@@ -39,6 +47,8 @@ class govuk::apps::email_alert_frontend(
   $vhost = 'email-alert-frontend',
   $port,
   $publishing_api_bearer_token = undef,
+  $redis_host = undef,
+  $redis_port = undef,
   $secret_key_base = undef,
   $sentry_dsn = undef,
   $email_alert_api_bearer_token = undef,
@@ -58,6 +68,11 @@ class govuk::apps::email_alert_frontend(
 
   Govuk::App::Envvar {
     app => 'email-alert-frontend',
+  }
+
+  govuk::app::envvar::redis { $app_name:
+    host => $redis_host,
+    port => $redis_port,
   }
 
   govuk::app::envvar {
