@@ -46,6 +46,10 @@ class monitoring::checks (
   include monitoring::checks::cdn_logs
 
   if $::aws_migration {
+    include govuk::apps::publisher::unprocessed_emails_count_check
+  }
+
+  if $::aws_migration {
     include govuk::apps::email_alert_api::checks
   }
 
