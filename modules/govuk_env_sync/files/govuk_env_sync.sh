@@ -494,19 +494,27 @@ function get_timestamp_elasticsearch {
 }
 
 function postprocess_signon_production {
+  new_domain="${local_domain}"
+  aws_environment="$(get_aws_environment)"
+  if [ "${aws_environment}" == "integration" ] || [ "${aws_environment}" == "staging" ]; then
+      new_domain="${aws_environment}.${ORIGINAL_DOMAIN}"
+  elif [ "${aws_environment}" == "production" ]; then
+      # we don't want any processing to be done for production
+      return
+  fi
+
   source_domain_query="SELECT home_uri FROM oauth_applications WHERE name='Publisher';"
   source_domain=$(echo "${source_domain_query}" |\
                   sudo -H mysql -h mysql-primary --database=signon_production | grep publisher | sed s#https://publisher.##g)
-  # local_domain comes from env.d/LOCAL_DOMAIN (see above).
 
   update_home_uri_query="UPDATE oauth_applications\
-     SET home_uri = REPLACE(home_uri, '${source_domain}', '${local_domain}')\
+     SET home_uri = REPLACE(home_uri, '${source_domain}', '${new_domain}')\
      WHERE home_uri LIKE '%${source_domain}%'"
 
   echo "${update_home_uri_query}" | sudo -H mysql -h mysql-primary --database=signon_production
 
   update_redirect_uri_query="UPDATE oauth_applications\
-     SET redirect_uri = REPLACE(redirect_uri, '${source_domain}', '${local_domain}')\
+     SET redirect_uri = REPLACE(redirect_uri, '${source_domain}', '${new_domain}')\
      WHERE redirect_uri LIKE '%${source_domain}%'"
 
   echo "${update_redirect_uri_query}" | sudo -H mysql -h mysql-primary --database=signon_production
