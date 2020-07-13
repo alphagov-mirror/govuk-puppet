@@ -448,8 +448,22 @@ function dump_mysql {
   # without holding locks for the duration of the dump.
   # https://dev.mysql.com/doc/refman/5.6/en/mysqldump.html#option_mysqldump_single-transaction
   log "Running mysqldump..."
-  sudo -H mysqldump -u "$DB_USER" --single-transaction --quick "${database}" | gzip > "${tempdir}/${filename}"
-  log "completed."
+  if [ -z "${excluded_tables:-}" ] ; then
+    sudo -H mysqldump -u "$DB_USER" --single-transaction --quick "${database}" | gzip > "${tempdir}/${filename}"
+  else
+    log "excluded tables specified: ${excluded_tables}"
+
+    IFS=',' read -r -a excluded_tables_array <<< "${excluded_tables}"
+
+    ignored_tables_string=''
+    for table in "${excluded_tables_array[@]}" ; do
+      ignored_tables_string+=" --ignore-table=${database}.${table}"
+    done
+
+    # shellcheck disable=SC2086
+    sudo -H mysqldump -u "$DB_USER" --single-transaction --quick "${database}" ${ignored_tables_string} | gzip > "${tempdir}/${filename}"
+  fi
+  log "mysqldump completed."
 }
 
 function restore_mysql {
@@ -672,6 +686,7 @@ do
     p) path="$OPTARG" ;;
     s) transformation_sql_file="$OPTARG" ;;
     F) pre_dump_transformation_sql_file="$OPTARG" ;;
+    e) excluded_tables="$OPTARG" ;;
     t) timestamp="$OPTARG" ;;
     *) usage ;;
   esac
