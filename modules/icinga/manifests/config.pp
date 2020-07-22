@@ -57,19 +57,9 @@ class icinga::config (
   }
 
   if $::aws_migration {
-
-    file { '/var/lib/icinga/log':
-      ensure => directory,
-      owner  => 'nagios',
-      group  => 'adm',
-      mode   => '2755',
-    }
-
-    file { '/var/lib/icinga/log/archives':
-      ensure => directory,
-      owner  => 'nagios',
-      group  => 'adm',
-      mode   => '2755',
+    @logrotate::conf { 'icinga':
+      matches => "/var/log/${title}/*.log",
+      maxsize => '100M',
     }
 
     file { '/etc/icinga/icinga.cfg':
