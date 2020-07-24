@@ -14,12 +14,13 @@ class monitoring::checks::reboots {
   }
 
   icinga::check { 'check_reboots_required':
-      check_command       => 'check_reboots_required',
-      use                 => 'govuk_normal_priority',
-      host_name           => $::fqdn,
-      check_interval      => 60,
-      service_description => 'At least 1 machine requires reboots due to apt updates',
-      notes_url           => monitoring_docs_url(rebooting-machines),
-      require             => Icinga::Check_config['check_reboots_required'],
+      check_command            => 'check_reboots_required',
+      use                      => 'govuk_normal_priority',
+      host_name                => $::fqdn,
+      check_interval           => 60,
+      service_description      => 'At least 1 machine requires reboots due to apt updates',
+      notes_url                => monitoring_docs_url(rebooting-machines),
+      require                  => Icinga::Check_config['check_reboots_required'],
+      first_notification_delay => 10080 # no more than one reboot alert per week
   }
 }
