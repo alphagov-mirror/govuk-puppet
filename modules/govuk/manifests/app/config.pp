@@ -355,6 +355,7 @@ define govuk::app::config (
       notes_url                  => monitoring_docs_url(high-memory-for-application),
       attempts_before_hard_state => 3,
       contact_groups             => $additional_check_contact_groups,
+      first_notification_delay   => 5,
     }
     @@icinga::check::graphite { "check_${title}_app_memory_restarts${::hostname}":
       ensure         => $ensure,
