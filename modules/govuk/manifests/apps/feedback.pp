@@ -37,7 +37,6 @@ class govuk::apps::feedback(
   $assisted_digital_google_spreadsheet_key = undef,
   $google_client_email = undef,
   $google_private_key = undef,
-  $survey_notify_service_api_key = undef,
   $govuk_notify_api_key = undef,
   $govuk_notify_template_id = undef,
 ) {
@@ -101,13 +100,6 @@ class govuk::apps::feedback(
     govuk::app::envvar { "${title}-GOOGLE_PRIVATE_KEY":
       varname => 'GOOGLE_PRIVATE_KEY',
       value   => $google_private_key,
-    }
-  }
-
-  if $survey_notify_service_api_key != undef {
-    govuk::app::envvar { "${title}-SURVEY_NOTIFY_SERVICE_API_KEY":
-      varname => 'SURVEY_NOTIFY_SERVICE_API_KEY',
-      value   => $survey_notify_service_api_key,
     }
   }
 
