@@ -20,6 +20,7 @@ class govuk::apps::ckan::cronjobs(
     paster_command => 'harvester run',
     plugin         => 'ckanext-harvest',
     minute         => '*/5',
+    timeout        => '4m',
   }
 
   govuk::apps::ckan::paster_cronjob { 'harvester cleanup':

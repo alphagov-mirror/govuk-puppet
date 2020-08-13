@@ -26,6 +26,7 @@ define govuk::apps::ckan::paster_cronjob (
   $weekday = undef,
   $plugin = undef,
   $paster_command = undef,
+  $timeout = undef,
   $ckan_ini = '/var/ckan/ckan.ini',
 ) {
   validate_string($plugin, $paster_command)
@@ -36,9 +37,15 @@ define govuk::apps::ckan::paster_cronjob (
     $ckan_config_arg = ''
   }
 
+  if $timeout {
+    $timeout_cmd = "/usr/bin/timeout ${timeout}"
+  } else {
+    $timeout_cmd = ''
+  }
+
   cron { $title:
     ensure   => $ensure,
-    command  => "cd /var/apps/ckan; ./venv/bin/paster --plugin=${plugin} ${paster_command} ${ckan_config_arg}",
+    command  => "cd /var/apps/ckan; ${timeout_cmd} ./venv/bin/paster --plugin=${plugin} ${paster_command} ${ckan_config_arg}",
     user     => 'deploy',
     hour     => $hour,
     minute   => $minute,
