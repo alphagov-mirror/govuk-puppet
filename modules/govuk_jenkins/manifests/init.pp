@@ -119,7 +119,7 @@ class govuk_jenkins (
   package { 'pipenv':
     ensure   => '11.8.0',
     provider => 'pip',
-    require => Package['setuptools'],
+    require  => Package['setuptools'],
   }
 
   package { 'requests':
