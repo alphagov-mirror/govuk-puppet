@@ -74,7 +74,7 @@ govuk_jenkins::job_builder::jobs:
   - govuk_jenkins::jobs::deploy_puppet_downstream
   - govuk_jenkins::jobs::build_fpm_package
 
-jenkins::default_plugins: []
+jenkins::params::default_plugins: []
 
 govuk_jenkins::plugins:
   ace-editor:
