@@ -116,6 +116,12 @@ class govuk_jenkins (
     provider => 'pip',
   }
 
+  package { 'stevedore':
+    ensure   => '1.30.1',
+    provider => 'pip3',
+  }
+
+
   # Runtime dependency of: https://github.com/alphagov/search-analytics
   ensure_packages(['libffi-dev'])
 
