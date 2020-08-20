@@ -111,9 +111,15 @@ class govuk_jenkins (
     provider => 'pip',
   }
 
+  package { 'setuptools':
+    ensure   => '38.4.0',
+    provider => 'pip',
+  }
+
   package { 'pipenv':
     ensure   => '11.8.0',
     provider => 'pip',
+    require => Package['setuptools'],
   }
 
   package { 'requests':
