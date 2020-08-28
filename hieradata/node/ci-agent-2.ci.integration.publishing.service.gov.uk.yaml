@@ -1,2 +1,6 @@
 ---
 mongodb::server::version: '2.6.12'
+
+govuk_solr::disable: true
+
+govuk_solr6::present: true
