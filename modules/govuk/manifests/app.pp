@@ -444,12 +444,7 @@ define govuk::app (
 
   $title_escaped = regsubst($title, '\.', '_', 'G')
   $statsd_timer_prefix = "${::fqdn_metrics}.${title_escaped}"
-
-  if ($app_type == 'bare' and $log_format_is_json) {
-    $err_log_json = { 'ignore_decoding_errors' => true }
-  } else {
-    $err_log_json = {}
-  }
+  $err_log_json = $app_type == 'bare' and $log_format_is_json
 
   # We still use Logstream for statsd metrics
   govuk_logging::logstream { "${title}-app-out":
@@ -516,7 +511,7 @@ define govuk::app (
       ensure => $ensure,
       paths  => [$log_path],
       tags   => ['stdout', 'application'],
-      json   => {'ignore_decoding_errors' => $log_format_is_json},
+      json   => $log_format_is_json,
       fields => {'application' => $title},
     }
   }
