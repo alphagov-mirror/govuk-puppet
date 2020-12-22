@@ -169,6 +169,7 @@ class govuk::apps::search_api(
     nagios_memory_warning    => $nagios_memory_warning,
     nagios_memory_critical   => $nagios_memory_critical,
     unicorn_worker_processes => $unicorn_worker_processes,
+    alert_when_file_handles_exceed => 4000,
   }
 
   govuk::app::envvar::rabbitmq { 'search-api':
