@@ -1,6 +1,7 @@
 ---
 
-govuk::apps::collections::memcache_servers: '127.0.0.1:11211'
+# override the shared memcache cluster as we don't have one in the draft stack
+govuk::apps::collections::memcache_servers: null
 govuk::apps::collections::vhost: 'draft-collections'
 
 govuk::apps::email_alert_frontend::vhost: 'draft-email-alert-frontend'
