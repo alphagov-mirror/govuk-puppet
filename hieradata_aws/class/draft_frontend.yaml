@@ -1,6 +1,8 @@
 ---
 
+govuk::apps::collections::memcache_servers: '127.0.0.1:11211'
 govuk::apps::collections::vhost: 'draft-collections'
+
 govuk::apps::email_alert_frontend::vhost: 'draft-email-alert-frontend'
 govuk::apps::frontend::vhost: 'draft-frontend'
 govuk::apps::government_frontend::vhost: 'draft-government-frontend'
