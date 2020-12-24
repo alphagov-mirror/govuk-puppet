@@ -91,5 +91,8 @@ class govuk::apps::collections(
     "${title}-MEMCACHE_SERVERS":
         varname => 'MEMCACHE_SERVERS',
         value   => $memcache_servers;
+    "${title}-DRAIN-TEST-TO-BE-REMOVED":
+        varname => "TEMP_TEST_ENV",
+        value => "remove_after_use";
   }
 }
