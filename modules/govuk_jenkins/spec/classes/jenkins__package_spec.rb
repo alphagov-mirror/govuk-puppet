@@ -10,7 +10,8 @@ describe 'govuk_jenkins::package', :type => :class do
   #     apt_mirror_hostname => 'apt.example.com',
   #   }
   # let(:pre_condition) { 'class govuk_python::apt_source { "apt_mirror_hostname": "apt.example.com"} }' }
-  let(:pre_condition) { 'include govuk_python::apt_source' }
+  let(:pre_condition) { 'class { "govuk_python::apt_source": apt_mirror_hostname => "apt.example.com" }' }
+  # let(:pre_condition) { 'include govuk_python::apt_source' }
   # let(:pre_condition) { 'class users::andre_the_giant { govuk_user { "andre_the_giant": } }' }
   # let(:pre_condition) { 'include ::govuk_docker' }
   # let(:pre_condition) { '@filebeat::prospector {"foo": }' }
