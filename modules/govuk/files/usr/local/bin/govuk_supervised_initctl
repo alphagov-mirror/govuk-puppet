@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# TODO
+if [ "$#" -ne "2" ]; then
+  echo "Usage: sudo govuk_supervised_initctl <COMMAND> <SERVICE>"
+  exit 1
+fi
+
+set -eu
+
+status () {
+  echo "---> ${@}"
+}
+
+error () {
+  echo "ERROR: ${@}" >&2
+  exit 1
+}
+
+pid_running () {
+  ps -p ${@} &> /dev/null
+}
+
+command=$1
+service=$2
+pid_file=/var/run/$service/app.pid
+original_pid="" && [ -e $pid_file ] && original_pid=$(cat $pid_file)
+
+case $command in
+  start)
+    status "Checking if ${service} is running"
+    if [[ $(initctl status $service) =~ "running" ]]; then
+      if [ ! -z $original_pid ] && pid_running $original_pid; then
+        status "${service} is running"
+        exit 0
+      else
+        status "${service} is an inconsistent state, stopping before starting..."
+        initctl stop $service
+      fi
+    else
+      status "${service} is not running, starting..."
+    fi
+
+    initctl start $service
+
+    sleep 10
+
+    if [ -e $pid_file ]; then
+      new_pid=$(cat $pid_file)
+    else
+      error "${service} hasn't started properly, there is no pid file at ${pid_file}"
+    fi
+
+    if pid_running $new_pid; then
+      status "${service} has started with process ${new_pid}"
+    else
+      error "${service} has failed to start"
+    fi
+    ;;
+  restart)
+    ([ ! -z $original_pid ] && pid_running $original_pid) || error "${service} is not running"
+
+    status "${service} is running with process ${original_pid}. Restarting..."
+
+    initctl restart $service
+
+    sleep 10
+
+    if [ -e $pid_file ]; then
+      new_pid=$(cat $pid_file)
+    else
+      error "${service} hasn't restarted properly, there is no pid file at ${pid_file}"
+    fi
+
+    if pid_running $new_pid && ! pid_running $original_pid; then
+      status "${service} has restarted with process ${new_pid}"
+    else
+      error "${service} failed to restart"
+    fi
+    ;;
+  reload)
+    ([ ! -z $original_pid ] && pid_running $original_pid) || error "${service} is not running"
+
+    status "${service} is running with process ${original_pid}. Reloading..."
+    initctl reload $service
+
+    waiting_for=0
+    new_pid=""
+
+    while true; do
+      sleep 10
+      waiting_for=$(($waiting_for+10))
+      current_pid=$(cat $pid_file) || error "Couldn't establish the current pid"
+
+      if [ -z $new_pid ] && [ $original_pid -ne $current_pid ]; then
+        new_pid=$current_pid
+        status "New process ${new_pid} started"
+      fi
+
+      if ! pid_running $original_pid; then
+        status "Process ${original_pid} has exited"
+        break
+      elif [ $waiting_for -gt 180 ]; then
+        error "Process ${original_pid} is still running after 3 minutes, something has gone wrong"
+      else
+        status "Waiting for processes to swap over"
+      fi
+    done
+
+    if pid_running $new_pid; then
+      status "Successfully reloaded ${service}"
+    else
+      error "The new process for ${service} doesn't appear to be running"
+    fi
+    ;;
+  *)
+    error "Unsupported command '${command}'. Only start, restart and reload are supported"
+    ;;
+esac
